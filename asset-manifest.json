@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/maxima-net/work-progress/static/css/main.bab0b925.chunk.css",
-    "main.js": "/maxima-net/work-progress/static/js/main.fd382f32.chunk.js",
-    "main.js.map": "/maxima-net/work-progress/static/js/main.fd382f32.chunk.js.map",
-    "runtime-main.js": "/maxima-net/work-progress/static/js/runtime-main.f3af7d3f.js",
-    "runtime-main.js.map": "/maxima-net/work-progress/static/js/runtime-main.f3af7d3f.js.map",
-    "static/js/2.4bfc45c0.chunk.js": "/maxima-net/work-progress/static/js/2.4bfc45c0.chunk.js",
-    "static/js/2.4bfc45c0.chunk.js.map": "/maxima-net/work-progress/static/js/2.4bfc45c0.chunk.js.map",
-    "static/js/3.7121d056.chunk.js": "/maxima-net/work-progress/static/js/3.7121d056.chunk.js",
-    "static/js/3.7121d056.chunk.js.map": "/maxima-net/work-progress/static/js/3.7121d056.chunk.js.map",
-    "index.html": "/maxima-net/work-progress/index.html",
-    "static/css/main.bab0b925.chunk.css.map": "/maxima-net/work-progress/static/css/main.bab0b925.chunk.css.map",
-    "static/js/2.4bfc45c0.chunk.js.LICENSE.txt": "/maxima-net/work-progress/static/js/2.4bfc45c0.chunk.js.LICENSE.txt"
+    "main.css": "/work-progress/static/css/main.bab0b925.chunk.css",
+    "main.js": "/work-progress/static/js/main.fd382f32.chunk.js",
+    "main.js.map": "/work-progress/static/js/main.fd382f32.chunk.js.map",
+    "runtime-main.js": "/work-progress/static/js/runtime-main.0b9df421.js",
+    "runtime-main.js.map": "/work-progress/static/js/runtime-main.0b9df421.js.map",
+    "static/js/2.4bfc45c0.chunk.js": "/work-progress/static/js/2.4bfc45c0.chunk.js",
+    "static/js/2.4bfc45c0.chunk.js.map": "/work-progress/static/js/2.4bfc45c0.chunk.js.map",
+    "static/js/3.7121d056.chunk.js": "/work-progress/static/js/3.7121d056.chunk.js",
+    "static/js/3.7121d056.chunk.js.map": "/work-progress/static/js/3.7121d056.chunk.js.map",
+    "index.html": "/work-progress/index.html",
+    "static/css/main.bab0b925.chunk.css.map": "/work-progress/static/css/main.bab0b925.chunk.css.map",
+    "static/js/2.4bfc45c0.chunk.js.LICENSE.txt": "/work-progress/static/js/2.4bfc45c0.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.f3af7d3f.js",
+    "static/js/runtime-main.0b9df421.js",
     "static/js/2.4bfc45c0.chunk.js",
     "static/css/main.bab0b925.chunk.css",
     "static/js/main.fd382f32.chunk.js"
