@@ -1,6 +1,7 @@
 {
   "urls": {
     "home": "/",
+    "bills": "/bills",
     "settings": "/settings"
   },
   "localStorageKeys" : {
