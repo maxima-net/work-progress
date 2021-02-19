@@ -8,7 +8,7 @@ import {
   Route,
 } from "react-router-dom";
 import Settings from './Settings';
-import config from './config.json';
+import config from '../config.json';
 
 function App() {
   return (

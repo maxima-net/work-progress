@@ -1,5 +1,5 @@
-import config from './config.json';
-import useStateWithLocalStorage from './hooks/useStateWithLocalStorage';
+import config from '../config.json';
+import useStateWithLocalStorage from '../hooks/useStateWithLocalStorage';
 import { useHistory } from "react-router-dom";
 
 const Settings = () => {

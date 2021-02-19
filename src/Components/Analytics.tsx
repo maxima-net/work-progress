@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
-import useStateWithLocalStorage from "./hooks/useStateWithLocalStorage";
-import config from './config.json';
+import useStateWithLocalStorage from "../hooks/useStateWithLocalStorage";
+import config from '../config.json';
 import { useHistory } from "react-router-dom";
 
 const inQueueListId = '5f4cdb937afb6a829d4ad8e6';
