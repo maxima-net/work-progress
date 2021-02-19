@@ -9,7 +9,7 @@ export interface CardProps {
 
 const Card = (props: CardProps) => {
   return (
-    <div className="card">
+    <div className="card bg-light bg-gradient">
       <div className="card-body">
         <h6 className="card-subtitle mb-2">{props.title}</h6>
         <h5 className="card-title text-success">
