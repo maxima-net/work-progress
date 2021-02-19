@@ -19,8 +19,17 @@ const Analytics = () => {
     history.push(config.urls.settings);
   }
 
-  const [isCardsLoaded, setIsCardsLoaded] = useState<boolean>(false);
+  const [isLoaded, setIsCardsLoaded] = useState<boolean>(false);
+  const [altCurrencyRatio, setAltCurrencyRatio] = useState<number | undefined>(undefined);
   const [cards, setCards] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('https://api.exchangeratesapi.io/latest?&base=USD&symbols=RUB')
+      .then(r => r.json())
+      .then(data => {
+        setAltCurrencyRatio(data.rates.RUB);
+      });
+  }, [])
 
   useEffect(() => {
     if(!sentToClientListId || !apiKey || !apiToken) {
@@ -28,7 +37,7 @@ const Analytics = () => {
     }
 
     fetch(`https://api.trello.com/1/lists/${sentToClientListId}/cards?key=${apiKey}&token=${apiToken}&customFieldItems=true`)
-      .then(response => response.json())
+      .then(r => r.json())
       .then(data => {
         console.log(data);
         setCards(data);
@@ -45,16 +54,16 @@ const Analytics = () => {
     <div className="container">
       <div className="row gy-3">
         <div className="col-lg">
-          <Card title="Current Income" value={currentTotal} isLoading={isCardsLoaded} />
+          <Card title="Current Income" value={currentTotal} isLoading={isLoaded} altCurrencyRatio={altCurrencyRatio} />
         </div>
         <div className="col-lg">
-          <Card title="Left to Withdraw" value={leftToMinimumRedraw} isLoading={isCardsLoaded} />
+          <Card title="Left to Withdraw" value={leftToMinimumRedraw} isLoading={isLoaded} altCurrencyRatio={altCurrencyRatio} />
         </div>
         <div className="col-lg">
-          <Card title="Withdrawn Earnings" value={withdrawnTotal} isLoading={isCardsLoaded} />
+          <Card title="Withdrawn Earnings" value={withdrawnTotal} isLoading={isLoaded} altCurrencyRatio={altCurrencyRatio} />
         </div>
         <div className="col-lg">
-          <Card title="Total Income" value={total} isLoading={isCardsLoaded} />
+          <Card title="Total Income" value={total} isLoading={isLoaded} altCurrencyRatio={altCurrencyRatio} />
         </div>
       </div>
     </div>
