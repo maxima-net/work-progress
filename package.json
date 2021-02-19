@@ -1,6 +1,6 @@
 {
   "name": "work-progress",
-  "homepage": "http://maxima-net.github.io/work-progress/",
+  "homepage": "http://maxima-net.github.io/work-progress",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
