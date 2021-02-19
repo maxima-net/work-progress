@@ -1,0 +1,10 @@
+{
+  "urls": {
+    "home": "/",
+    "settings": "/settings"
+  },
+  "localStorageKeys" : {
+    "trelloApiKey": "trelloApiKey",
+    "trelloApiToken": "trelloApiToken"
+  }
+}
