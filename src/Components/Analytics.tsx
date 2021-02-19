@@ -3,12 +3,17 @@ import Card from "./Card";
 import useStateWithLocalStorage from "../hooks/useStateWithLocalStorage";
 import config from '../config.json';
 import { useHistory } from "react-router-dom";
+import { TrelloCard } from "../types";
 
 const inQueueListId = '5f4cdb937afb6a829d4ad8e6';
 const inProgressListId = '5f4cdb937afb6a829d4ad8e7';
 const inRevisionListId = '5f4cdb937afb6a829d4ad8ea';
 const completedListId = '5f4cdb937afb6a829d4ad8e8';
 const sentToClientListId = '5f4cdb937afb6a829d4ad8e9';
+
+const getTotal = (cards: TrelloCard[]): number => {
+  return cards.reduce((summ, c) => summ += +c.customFieldItems[0].value.number, 0);
+}
 
 const Analytics = () => {
   const [apiKey] = useStateWithLocalStorage(config.localStorageKeys.trelloApiKey);
@@ -21,7 +26,7 @@ const Analytics = () => {
 
   const [isLoaded, setIsCardsLoaded] = useState<boolean>(false);
   const [altCurrencyRatio, setAltCurrencyRatio] = useState<number | undefined>(undefined);
-  const [cards, setCards] = useState<any[]>([]);
+  const [cards, setCards] = useState<TrelloCard[]>([]);
 
   useEffect(() => {
     fetch('https://api.exchangeratesapi.io/latest?&base=USD&symbols=RUB')
@@ -45,9 +50,10 @@ const Analytics = () => {
       });
   }, [sentToClientListId, apiKey, apiToken]);
 
-  const total = cards.reduce((summ, c) => summ += +c.customFieldItems[0].value.number, 0);
-  const currentTotal = cards.filter(c => !c.labels || !c.labels.length).reduce((summ, c) => summ += +c.customFieldItems[0].value.number, 0);
-  const withdrawnTotal = cards.filter(c => c.labels && c.labels.length).reduce((summ, c) => summ += +c.customFieldItems[0].value.number, 0);
+
+  const total = getTotal(cards);
+  const currentTotal = getTotal(cards.filter(c => !c.labels || !c.labels.length));
+  const withdrawnTotal = getTotal(cards.filter(c => c.labels && c.labels.length));
   const leftToMinimumRedraw = Math.max(100 - currentTotal, 0);
 
   return (
