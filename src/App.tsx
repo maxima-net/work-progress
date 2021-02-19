@@ -12,13 +12,13 @@ import config from './config.json';
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Header />
       <Switch>
-        <Route path={config.urls.settings}>
+        <Route exact path={config.urls.settings}>
           <Settings />
         </Route>
-        <Route path={config.urls.home}>
+        <Route exact  path={config.urls.home}>
           <Analytics />
         </Route>
       </Switch>
