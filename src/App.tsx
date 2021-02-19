@@ -3,7 +3,7 @@ import Analytics from './Analytics';
 import Header from './Header';
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
@@ -12,7 +12,7 @@ import config from './config.json';
 
 function App() {
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router>
       <Header />
       <Switch>
         <Route exact path={config.urls.settings}>
