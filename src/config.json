@@ -1,11 +1,24 @@
 {
   "urls": {
     "home": "/",
-    "bills": "/bills",
+    "unpaid": "/unpaid",
+    "invoiced": "/invoiced",
+    "paid": "/paid",
     "settings": "/settings"
   },
-  "localStorageKeys" : {
+  "localStorageKeys": {
     "trelloApiKey": "trelloApiKey",
     "trelloApiToken": "trelloApiToken"
+  },
+  "labels": {
+    "paid": "Paid",
+    "invoiced": "Payment Invoiced"
+  },
+  "trelloLists": {
+    "inQueueListId": "5f4cdb937afb6a829d4ad8e6",
+    "inProgressListId": "5f4cdb937afb6a829d4ad8e7",
+    "inRevisionListId": "5f4cdb937afb6a829d4ad8ea",
+    "completedListId": "5f4cdb937afb6a829d4ad8e8",
+    "sentToClientListId": "5f4cdb937afb6a829d4ad8e9"
   }
 }

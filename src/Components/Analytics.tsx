@@ -4,18 +4,7 @@ import useStateWithLocalStorage from "../hooks/useStateWithLocalStorage";
 import config from '../config.json';
 import { Link, useHistory } from "react-router-dom";
 import { TrelloCard } from "../types";
-
-const inQueueListId = '5f4cdb937afb6a829d4ad8e6';
-const inProgressListId = '5f4cdb937afb6a829d4ad8e7';
-const inRevisionListId = '5f4cdb937afb6a829d4ad8ea';
-const completedListId = '5f4cdb937afb6a829d4ad8e8';
-const sentToClientListId = '5f4cdb937afb6a829d4ad8e9';
-
-const getCards = (listId: string, apiKey: string, apiToken: string, callback: (data: TrelloCard[]) => void): Promise<any> => {
-  return fetch(`https://api.trello.com/1/lists/${listId}/cards?key=${apiKey}&token=${apiToken}&customFieldItems=true`)
-    .then(r => r.json())
-    .then(data => callback(data));
-}
+import { getCards, getExchangeRate } from "../utils";
 
 const getTotal = (cards: TrelloCard[]): number => {
   return cards.reduce((summ, c) => summ += +c.customFieldItems[0].value.number, 0);
@@ -39,28 +28,24 @@ const Analytics = () => {
   const [sentToClientCards, setSentToClientCards] = useState<TrelloCard[]>([]);
 
   useEffect(() => {
-    fetch('https://api.exchangeratesapi.io/latest?&base=USD&symbols=RUB')
-      .then(r => r.json())
-      .then(data => {
-        setAltCurrencyRatio(data.rates.RUB);
-      });
-  }, [])
+    getExchangeRate(data => setAltCurrencyRatio(data))
+  }, []);
 
   useEffect(() => {
-    if (!sentToClientListId || !apiKey || !apiToken) {
+    if (!apiKey || !apiToken) {
       return;
     }
 
-    const inQueueCardsPromise = getCards(inQueueListId, apiKey, apiToken, (data) => setInQueueCards(data.filter(c => c.id !== '5f4cdb937afb6a829d4ad8f2')));
-    const inProgressCardsPromise = getCards(inProgressListId, apiKey, apiToken, (data) => setInProgressCards(data));
-    const compleatedCardsPromise = getCards(completedListId, apiKey, apiToken, (data) => setCompletedCards(data));
-    const inRevisionCardsPromise = getCards(inRevisionListId, apiKey, apiToken, (data) => setInRevisionCards(data));
-    const sentToClientCardsPromise = getCards(sentToClientListId, apiKey, apiToken, (data) => setSentToClientCards(data));
+    const inQueueCardsPromise = getCards(config.trelloLists.inQueueListId, apiKey, apiToken, (data) => setInQueueCards(data.filter(c => c.id !== '5f4cdb937afb6a829d4ad8f2')));
+    const inProgressCardsPromise = getCards(config.trelloLists.inProgressListId, apiKey, apiToken, (data) => setInProgressCards(data));
+    const compleatedCardsPromise = getCards(config.trelloLists.completedListId, apiKey, apiToken, (data) => setCompletedCards(data));
+    const inRevisionCardsPromise = getCards(config.trelloLists.inRevisionListId, apiKey, apiToken, (data) => setInRevisionCards(data));
+    const sentToClientCardsPromise = getCards(config.trelloLists.sentToClientListId, apiKey, apiToken, (data) => setSentToClientCards(data));
 
     Promise.all([inQueueCardsPromise, inProgressCardsPromise, compleatedCardsPromise, inRevisionCardsPromise, sentToClientCardsPromise])
       .then(() => setIsCardsLoaded(true));
 
-  }, [inQueueListId, inProgressListId, completedListId, inRevisionListId, sentToClientListId, apiKey, apiToken]);
+  }, [apiKey, apiToken]);
 
 
   const inQueueTotal = getTotal(inQueueCards);
@@ -72,8 +57,11 @@ const Analytics = () => {
   const currentCards = sentToClientCards.filter(c => !c.labels || !c.labels.length);
   const currentTotal = getTotal(currentCards);
 
-  const withdrawnCards = sentToClientCards.filter(c => c.labels && c.labels.length);
-  const withdrawnTotal = getTotal(withdrawnCards);
+  const invoicedCards = sentToClientCards.filter(c => c.labels && c.labels.some(l => l.name === config.labels.invoiced));
+  const invoicedTotal = getTotal(invoicedCards);
+
+  const paidCards = sentToClientCards.filter(c => c.labels && c.labels.some(l => l.name === config.labels.paid));
+  const paidTotal = getTotal(paidCards);
 
   const leftToMinimumRedraw = Math.max(100 - currentTotal, 0);
 
@@ -82,22 +70,22 @@ const Analytics = () => {
       <div className="row gy-3">
         <div className="col-lg">
           <Card title="In Queue" value={inQueueTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
-            {inQueueCards.length} drawings
+            {inQueueCards.length} drawing(s)
           </Card>
         </div>
         <div className="col-lg">
           <Card title="In Progress" value={inProgressTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
-            {inProgressCards.length} drawings
+            {inProgressCards.length} drawing(s)
           </Card>
         </div>
         <div className="col-lg">
           <Card title="Completed" value={completedTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
-            {completedCards.length} drawings
+            {completedCards.length} drawing(s)
           </Card>
         </div>
         <div className="col-lg">
           <Card title="In Revision" value={inRevisionTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
-            {inRevisionCards.length} drawings
+            {inRevisionCards.length} drawing(s)
           </Card>
         </div>
       </div>
@@ -105,22 +93,22 @@ const Analytics = () => {
       <div className="row gy-3">
         <div className="col-lg">
           <Card title="Unpaid" value={currentTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio} badge={leftToMinimumRedraw === 0 ? 'Ready' : ''}>
-            <Link to={config.urls.bills} className="card-link">{currentCards.length} drawings</Link>
+            <Link to={config.urls.unpaid} className="card-link">{currentCards.length} drawing(s)</Link>
           </Card>
         </div>
         <div className="col-lg">
-          <Card title="Left to Withdraw" value={leftToMinimumRedraw} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
-            {leftToMinimumRedraw === 0 ? <span className="text-success">Ready to Withdraw</span> : 'Required to Withdraw'}
+          <Card title="Invoiced" value={invoicedTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
+            <Link to={config.urls.invoiced} className="card-link">{invoicedCards.length} drawing(s)</Link>
           </Card>
         </div>
         <div className="col-lg">
-          <Card title="Paid" value={withdrawnTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
-            {withdrawnCards.length} drawings
+          <Card title="Paid" value={paidTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
+            <Link to={config.urls.paid} className="card-link">{paidCards.length} drawing(s)</Link>
           </Card>
         </div>
         <div className="col-lg">
           <Card title="Total" value={sentToClientTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
-            {sentToClientCards.length} drawings
+            {sentToClientCards.length} drawing(s)
           </Card>
         </div>
       </div>

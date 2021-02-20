@@ -8,7 +8,9 @@ const Header = () => {
       <p className="h5 my-0 me-md-auto fw-normal">Work Progress</p>
       <nav className="my-2 my-md-0 me-md-3">
         <Link className="p-2 text-dark" to={config.urls.home}>Analytics</Link>
-        <Link className="p-2 text-dark" to={config.urls.bills}>Bills</Link>
+        <Link className="p-2 text-dark" to={config.urls.unpaid}>Unpaid</Link>
+        <Link className="p-2 text-dark" to={config.urls.invoiced}>Invoiced</Link>
+        <Link className="p-2 text-dark" to={config.urls.paid}>Paid</Link>
         <Link className="p-2 text-dark" to={config.urls.settings}>Settings</Link>
       </nav>
     </header>
