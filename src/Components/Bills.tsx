@@ -69,14 +69,14 @@ const Bills = () => {
   return (
     <div className="container">
       <div className="row gy-3">
-        <h1>Unpaid Orders</h1>
+        <h3>Unpaid Orders</h3>
         <table className="table table-hover">
           <thead>
             <tr>
               <th scope="col">#</th>
               <th scope="col">Description</th>
               <th scope="col" align="right" style={{textAlign: 'right'}}>Coast (USD)</th>
-              <th scope="col" align="right" style={{textAlign: 'right'}}>Alt Coast (RUB)</th>
+              <th scope="col" align="right" style={{textAlign: 'right'}}>Coast (RUB)</th>
             </tr>
           </thead>
           <tbody>
@@ -84,14 +84,14 @@ const Bills = () => {
               <tr key={c.id}>
                 <th scope="row">{i + 1}</th>
                 <td>{getShortDescription(c)}</td>
-                <td align="right">${c.customFieldItems[0].value.number}</td>
-                <td align="right">{altCurrencyRatio ? `${(c.customFieldItems[0].value.number * altCurrencyRatio).toFixed(2)}₽` : 'N/A'} </td>
+                <td align="right">{c.customFieldItems[0].value.number}</td>
+                <td align="right">{altCurrencyRatio ? `${(c.customFieldItems[0].value.number * altCurrencyRatio).toFixed(2)}` : 'N/A'} </td>
               </tr>
             )}
             <tr className="table-success">
               <th scope="row">Total</th>
-              <td colSpan={2} align="right"><b>${currentTotal}</b></td>
-              <td align="right"><b>{altCurrencyRatio ? `${(currentTotal * altCurrencyRatio).toFixed(2)}₽` : 'N/A'}</b></td>
+              <td colSpan={2} align="right"><b>{currentTotal}</b></td>
+              <td align="right"><b>{altCurrencyRatio ? `${(currentTotal * altCurrencyRatio).toFixed(2)}` : 'N/A'}</b></td>
             </tr>
           </tbody>
         </table>

@@ -5,21 +5,23 @@ export interface CardProps {
   title: string;
   value: number;
   altCurrencyRatio?: number;
+  badge?: string;
 }
 
-const Card = (props: CardProps) => {
+const Card: React.FC<CardProps> = (props) => {
   return (
     <div className="card bg-light bg-gradient">
       <div className="card-body">
-        <h6 className="card-subtitle mb-2">{props.title}</h6>
+        <h6 className="card-subtitle mb-2">{props.title} <span className="badge bg-primary" style={{float: 'right'}}>{props.badge}</span></h6>
         <h5 className="card-title text-success">
-          {props.isLoading 
+          {!props.isLoading 
             ? <>
                 <CountUp prefix="$" separator="," end={props.value} />
-                {props.altCurrencyRatio && <><span> / </span><CountUp prefix="~" suffix=" ₽" separator="," end={props.value * props.altCurrencyRatio} /></>} 
+                {props.altCurrencyRatio && <><span> / </span><CountUp suffix=" ₽" separator="," end={props.value * props.altCurrencyRatio} /></>} 
               </>
             : 'Loading...'}
         </h5>
+        <p className="card-text">{!props.isLoading ? props.children : 'Loading...'}</p>
       </div>
     </div>
   );
