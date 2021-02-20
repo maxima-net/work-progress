@@ -36,12 +36,14 @@ const PaidDrawings = () => {
   return (
     <div className="container">
       <div className="row gy-3">
-        <h3>Paid Orders</h3>
-        {
-          !isLoaded
-            ? 'Loading...'
-            : <CardsList cards={cards} altCurrencyRatio={altCurrencyRatio} />
-        }
+        <div className="col">
+          <h3>Paid Orders</h3>
+          {
+            !isLoaded
+              ? 'Loading...'
+              : <CardsList cards={cards} altCurrencyRatio={altCurrencyRatio} />
+          }
+        </div>
       </div>
     </div>
   )

@@ -36,12 +36,19 @@ const UnpaidDrawings = () => {
   return (
     <div className="container">
       <div className="row gy-3">
-        <h3>Unpaid Orders</h3>
-        {
-          !isLoaded
-            ? 'Loading...'
-            : <CardsList cards={cards} altCurrencyRatio={altCurrencyRatio} />
-        }
+        <div className="col">
+          <h3>Unpaid Orders</h3>
+          {
+            !isLoaded
+              ? 'Loading...'
+              : <CardsList cards={cards} altCurrencyRatio={altCurrencyRatio} />
+          }
+        </div>
+      </div>
+      <div className="row gy-3 ">
+        <div className="col">
+          <button type="button" className="btn btn-outline-primary">Create an Invoice</button>
+        </div>
       </div>
     </div>
   )

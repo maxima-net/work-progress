@@ -41,16 +41,16 @@ const CardsList: React.FC<CardsListProps> = (props) => {
             <th scope="row">{i + 1}</th>
             <td>{getShortDescription(c)}</td>
             <td align="right">{c.customFieldItems[0].value.number}</td>
-            <td align="right">{props.altCurrencyRatio ? `${(c.customFieldItems[0].value.number * props.altCurrencyRatio).toFixed(2)}` : 'N/A'}</td>
+            <td align="right">{props.altCurrencyRatio ? `${(c.customFieldItems[0].value.number * props.altCurrencyRatio).toFixed(0)}` : 'N/A'}</td>
             <td align="right"><a href={c.shortUrl} className="link-primary">Link</a></td>
           </tr>
         )}
       </tbody>
       <tfoot>
-        <tr className="table-success">
+        <tr>
           <th scope="row">Total</th>
           <td colSpan={2} align="right"><b>${currentTotal}</b></td>
-          <td align="right"><b>{props.altCurrencyRatio ? `${(currentTotal * props.altCurrencyRatio).toFixed(2)}₽` : 'N/A'}</b></td>
+          <td align="right"><b>{props.altCurrencyRatio ? `${(currentTotal * props.altCurrencyRatio).toFixed(0)}₽` : 'N/A'}</b></td>
           <td></td>
         </tr>
       </tfoot>

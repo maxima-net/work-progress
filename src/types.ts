@@ -5,6 +5,15 @@ export interface TrelloLabel {
   name: string;
 }
 
+export interface TrelloCustomField {
+  id: string;
+  idCustomField: string;
+  idModel: string;
+  modelType: string;
+  value: { number: number }
+  number: number
+}
+
 export interface TrelloCard {
   id: string;
   name: string;
