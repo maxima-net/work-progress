@@ -32,17 +32,17 @@ const PaidDrawings = () => {
       .then(() => setIsLoaded(true));
 
   }, [apiKey, apiToken]);
-
+  
+  if (!isLoaded) {
+    return null;
+  }
+  
   return (
     <div className="container">
       <div className="row gy-3">
         <div className="col">
           <h3>Paid Orders</h3>
-          {
-            !isLoaded
-              ? 'Loading...'
-              : <CardsList cards={cards} altCurrencyRatio={altCurrencyRatio} />
-          }
+            <CardsList cards={cards} altCurrencyRatio={altCurrencyRatio} />
         </div>
       </div>
     </div>

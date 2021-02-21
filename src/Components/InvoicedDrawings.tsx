@@ -39,9 +39,13 @@ const InvoicedDrawings = () => {
   }
 
   const handleMakePaidClick = () => {
-    // const promisesForRemoving = cards.map(c => removeLabelFromCard(c.id, config.labelsId.invoiced, apiKey, apiToken));
-    // const promisesForAdding = cards.map(c => addLabelToCard(c.id, config.labelsId.paid, apiKey, apiToken));
-    // Promise.all([...promisesForAdding, ...promisesForRemoving]).then(() => history.push(config.urls.paid));
+    const promisesForRemoving = cards.map(c => removeLabelFromCard(c.id, config.labelsId.invoiced, apiKey, apiToken));
+    const promisesForAdding = cards.map(c => addLabelToCard(c.id, config.labelsId.paid, apiKey, apiToken));
+    Promise.all([...promisesForAdding, ...promisesForRemoving]).then(() => history.push(config.urls.paid));
+  }
+
+  if (!isLoaded) {
+    return null;
   }
 
   return (
@@ -49,11 +53,7 @@ const InvoicedDrawings = () => {
       <div className="row gy-3">
         <div className="col">
           <h3>Invoiced Orders</h3>
-          {
-            !isLoaded
-              ? 'Loading...'
-              : <CardsList cards={cards} altCurrencyRatio={altCurrencyRatio} />
-          }
+          <CardsList cards={cards} altCurrencyRatio={altCurrencyRatio} />
         </div>
       </div>
       <div className="row gy-3 ">

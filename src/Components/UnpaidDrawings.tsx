@@ -54,27 +54,33 @@ const UnpaidDrawings = () => {
     Promise.all(promises).then(() => history.push(config.urls.invoiced));
   }
 
+  if (!isLoaded) {
+    return null;
+  }
+
+  const invoiceButtonText = !payPalClientId || !payPalSecret
+    ? 'Provide PayPal settings'
+    : invoidedCards.length ? 'Finish Previous Invoice' : 'Make Invoiced';
+
+  const isInvoiceButtonDisabled = !payPalClientId || !payPalSecret || !!invoidedCards.length;
+
   return (
     <div className="container">
       <div className="row gy-3">
         <div className="col">
           <h3>Unpaid Orders</h3>
-          {
-            !isLoaded
-              ? 'Loading...'
-              : <CardsList cards={unpaidCards} altCurrencyRatio={altCurrencyRatio} />
-          }
+          <CardsList cards={unpaidCards} altCurrencyRatio={altCurrencyRatio} />
         </div>
       </div>
       <div className="row gy-3 ">
         <div className="col">
           <button type="button" className="btn btn-outline-primary" disabled={!!invoidedCards.length} onClick={handleCreateInvoiceClick}>
-            {invoidedCards.length ? 'Finish Previous Invoice First' : 'Create Draft Invoice'}
+            {invoidedCards.length ? 'Finish Previous Invoice' : 'Create Draft Invoice'}
           </button>
         </div>
         <div className="col text-end">
-          <button type="button" className="btn btn-outline-primary" disabled={!!invoidedCards.length} onClick={handleMakeCardsInvoicedClick}>
-            {invoidedCards.length ? 'Finish Previous Invoice First' : 'Make Invoiced'}
+          <button type="button" className="btn btn-outline-primary" disabled={isInvoiceButtonDisabled} onClick={handleMakeCardsInvoicedClick}>
+            {invoiceButtonText}
           </button>
         </div>
       </div>
