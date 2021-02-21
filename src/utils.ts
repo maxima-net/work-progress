@@ -12,3 +12,11 @@ export const getExchangeRate = (callback: (rate: number) => void): Promise<any> 
       callback(data.rates.RUB);
     });
 }
+
+export const addLabelToCard = (cardId: string, labelId: string, apiKey: string, apiToken: string) => {
+  return fetch(`https://api.trello.com/1/cards/${cardId}/idLabels?key=${apiKey}&token=${apiToken}&value=${labelId}`, { method: 'POST' });
+}
+
+export const removeLabelFromCard = (cardId: string, labelId: string, apiKey: string, apiToken: string) => {
+  return fetch(`https://api.trello.com/1/cards/${cardId}/idLabels/${labelId}?key=${apiKey}&token=${apiToken}`, { method: 'DELETE' });
+}

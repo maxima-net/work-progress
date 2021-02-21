@@ -10,9 +10,9 @@
     "trelloApiKey": "trelloApiKey",
     "trelloApiToken": "trelloApiToken"
   },
-  "labels": {
-    "paid": "Paid",
-    "invoiced": "Payment Invoiced"
+  "labelsId": {
+    "paid": "5f4cdb937afb6a829d4ad8f4",
+    "invoiced": "5f4cdb937afb6a829d4ad8fe"
   },
   "trelloLists": {
     "inQueueListId": "5f4cdb937afb6a829d4ad8e6",

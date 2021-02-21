@@ -4,7 +4,7 @@ import config from '../config.json';
 import { useHistory } from "react-router-dom";
 import { TrelloCard } from "../types";
 import CardsList from "./CardsList";
-import { getCards, getExchangeRate } from "../utils";
+import { addLabelToCard, getCards, getExchangeRate, removeLabelFromCard } from "../utils";
 
 const InvoicedDrawings = () => {
   const [apiKey] = useStateWithLocalStorage(config.localStorageKeys.trelloApiKey);
@@ -28,10 +28,21 @@ const InvoicedDrawings = () => {
       return;
     }
 
-    getCards(config.trelloLists.sentToClientListId, apiKey, apiToken, (data) => setCards(data.filter(c => c.labels && c.labels.some(l => l.name === config.labels.invoiced))))
+    getCards(config.trelloLists.sentToClientListId, apiKey, apiToken, (data) => setCards(data.filter(c => c.labels && c.labels.some(l => l.id === config.labelsId.invoiced))))
       .then(() => setIsLoaded(true));
 
   }, [apiKey, apiToken]);
+
+  const handleMakeUnpaidClick = () => {
+    const promises = cards.map(c => removeLabelFromCard(c.id, config.labelsId.invoiced, apiKey, apiToken));
+    Promise.all(promises).then(() => history.push(config.urls.unpaid));
+  }
+
+  const handleMakePaidClick = () => {
+    // const promisesForRemoving = cards.map(c => removeLabelFromCard(c.id, config.labelsId.invoiced, apiKey, apiToken));
+    // const promisesForAdding = cards.map(c => addLabelToCard(c.id, config.labelsId.paid, apiKey, apiToken));
+    // Promise.all([...promisesForAdding, ...promisesForRemoving]).then(() => history.push(config.urls.paid));
+  }
 
   return (
     <div className="container">
@@ -47,10 +58,10 @@ const InvoicedDrawings = () => {
       </div>
       <div className="row gy-3 ">
         <div className="col">
-          <button type="button" className="btn btn-outline-secondary">Make Unpaid</button>
+          <button type="button" className="btn btn-outline-secondary" onClick={handleMakeUnpaidClick}>Make Unpaid</button>
         </div>
         <div className="col text-end">
-          <button type="button" className="btn btn-outline-primary">Make Paid</button>
+          <button type="button" className="btn btn-outline-primary" onClick={handleMakePaidClick}>Make Paid</button>
         </div>
       </div>
     </div>

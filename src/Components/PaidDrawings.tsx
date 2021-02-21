@@ -28,7 +28,7 @@ const PaidDrawings = () => {
       return;
     }
 
-    getCards(config.trelloLists.sentToClientListId, apiKey, apiToken, (data) => setCards(data.filter(c => c.labels && c.labels.some(l => l.name === config.labels.paid))))
+    getCards(config.trelloLists.sentToClientListId, apiKey, apiToken, (data) => setCards(data.filter(c => c.labels && c.labels.some(l => l.id === config.labelsId.paid))))
       .then(() => setIsLoaded(true));
 
   }, [apiKey, apiToken]);

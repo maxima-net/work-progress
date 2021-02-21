@@ -32,26 +32,23 @@ const CardsList: React.FC<CardsListProps> = (props) => {
           <th scope="col">Description</th>
           <th scope="col" align="right" style={{ textAlign: 'right' }}>Cost (USD)</th>
           <th scope="col" align="right" style={{ textAlign: 'right' }}>Cost (RUB)</th>
-          <th scope="col" align="right" style={{ textAlign: 'right' }}>Link</th>
         </tr>
       </thead>
       <tbody>
         {props.cards.map((c, i) =>
           <tr key={c.id}>
             <th scope="row">{i + 1}</th>
-            <td>{getShortDescription(c)}</td>
+            <td><a className="link-dark" href={c.shortUrl}>{getShortDescription(c)}</a></td>
             <td align="right">{c.customFieldItems[0].value.number}</td>
             <td align="right">{props.altCurrencyRatio ? `${(c.customFieldItems[0].value.number * props.altCurrencyRatio).toFixed(0)}` : 'N/A'}</td>
-            <td align="right"><a href={c.shortUrl} className="link-primary">Link</a></td>
           </tr>
         )}
       </tbody>
       <tfoot>
         <tr>
-          <th scope="row">Total</th>
-          <td colSpan={2} align="right"><b>${currentTotal}</b></td>
+          <th colSpan={2} scope="row">Total</th>
+          <td  align="right"><b>${currentTotal}</b></td>
           <td align="right"><b>{props.altCurrencyRatio ? `${(currentTotal * props.altCurrencyRatio).toFixed(0)}₽` : 'N/A'}</b></td>
-          <td></td>
         </tr>
       </tfoot>
     </table>

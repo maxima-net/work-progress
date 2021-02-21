@@ -4,7 +4,7 @@ import config from '../config.json';
 import { useHistory } from "react-router-dom";
 import { TrelloCard } from "../types";
 import CardsList from "./CardsList";
-import { getCards, getExchangeRate } from "../utils";
+import { addLabelToCard, getCards, getExchangeRate } from "../utils";
 
 const UnpaidDrawings = () => {
   const [apiKey] = useStateWithLocalStorage(config.localStorageKeys.trelloApiKey);
@@ -17,7 +17,8 @@ const UnpaidDrawings = () => {
 
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [altCurrencyRatio, setAltCurrencyRatio] = useState<number | undefined>(undefined);
-  const [cards, setCards] = useState<TrelloCard[]>([]);
+  const [unpaidCards, setUnpaidCards] = useState<TrelloCard[]>([]);
+  const [invoidedCards, setInvoicedCards] = useState<TrelloCard[]>([]);
 
   useEffect(() => {
     getExchangeRate(data => setAltCurrencyRatio(data))
@@ -28,10 +29,16 @@ const UnpaidDrawings = () => {
       return;
     }
 
-    getCards(config.trelloLists.sentToClientListId, apiKey, apiToken, (data) => setCards(data.filter(c => !c.labels || !c.labels.length)))
-      .then(() => setIsLoaded(true));
+    const unpaidPromise = getCards(config.trelloLists.sentToClientListId, apiKey, apiToken, (data) => setUnpaidCards(data.filter(c => !c.labels || !c.labels.length)));
+    const invoicedPromise = getCards(config.trelloLists.sentToClientListId, apiKey, apiToken, (data) => setInvoicedCards(data.filter(c => c.labels && c.labels.some(l => l.id === config.labelsId.invoiced))));
 
+    Promise.all([unpaidPromise, invoicedPromise]).then(() => setIsLoaded(true));
   }, [apiKey, apiToken]);
+
+  const handleCreateInvoiceClick = () => {
+    const promises = unpaidCards.map(c => addLabelToCard(c.id, config.labelsId.invoiced, apiKey, apiToken));
+    Promise.all(promises).then(() => history.push(config.urls.invoiced));
+  }
 
   return (
     <div className="container">
@@ -41,13 +48,15 @@ const UnpaidDrawings = () => {
           {
             !isLoaded
               ? 'Loading...'
-              : <CardsList cards={cards} altCurrencyRatio={altCurrencyRatio} />
+              : <CardsList cards={unpaidCards} altCurrencyRatio={altCurrencyRatio} />
           }
         </div>
       </div>
       <div className="row gy-3 ">
-        <div className="col">
-          <button type="button" className="btn btn-outline-primary">Create an Invoice</button>
+        <div className="col text-end">
+          <button type="button" className="btn btn-outline-primary" disabled={!!invoidedCards.length} onClick={handleCreateInvoiceClick}>
+            {invoidedCards.length ? 'Finish Previous Invoice First' : 'Create an Invoice'}
+          </button>
         </div>
       </div>
     </div>

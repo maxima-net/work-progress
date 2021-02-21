@@ -57,16 +57,43 @@ const Analytics = () => {
   const currentCards = sentToClientCards.filter(c => !c.labels || !c.labels.length);
   const currentTotal = getTotal(currentCards);
 
-  const invoicedCards = sentToClientCards.filter(c => c.labels && c.labels.some(l => l.name === config.labels.invoiced));
+  const invoicedCards = sentToClientCards.filter(c => c.labels && c.labels.some(l => l.id === config.labelsId.invoiced));
   const invoicedTotal = getTotal(invoicedCards);
 
-  const paidCards = sentToClientCards.filter(c => c.labels && c.labels.some(l => l.name === config.labels.paid));
+  const paidCards = sentToClientCards.filter(c => c.labels && c.labels.some(l => l.id === config.labelsId.paid));
   const paidTotal = getTotal(paidCards);
 
   const leftToMinimumRedraw = Math.max(100 - currentTotal, 0);
 
+  const badgeText = isLoaded 
+    ? leftToMinimumRedraw === 0 ? 'Ready' : `Earn more $${leftToMinimumRedraw}`
+    : '';
+
   return (
     <div className="container">
+      <div className="row gy-3">
+        <div className="col-lg">
+          <Card title="Unpaid" value={currentTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio} badge={badgeText}>
+            <Link to={config.urls.unpaid} className="card-link link-dark">{currentCards.length} drawing(s)</Link>
+          </Card>
+        </div>
+        <div className="col-lg">
+          <Card title="Invoiced" value={invoicedTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
+            <Link to={config.urls.invoiced} className="card-link link-dark">{invoicedCards.length} drawing(s)</Link>
+          </Card>
+        </div>
+        <div className="col-lg">
+          <Card title="Paid" value={paidTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
+            <Link to={config.urls.paid} className="card-link link-dark">{paidCards.length} drawing(s)</Link>
+          </Card>
+        </div>
+        <div className="col-lg">
+          <Card title="Total" value={sentToClientTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
+            {sentToClientCards.length} drawing(s)
+          </Card>
+        </div>
+      </div>
+      <br />
       <div className="row gy-3">
         <div className="col-lg">
           <Card title="In Queue" value={inQueueTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
@@ -86,29 +113,6 @@ const Analytics = () => {
         <div className="col-lg">
           <Card title="In Revision" value={inRevisionTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
             {inRevisionCards.length} drawing(s)
-          </Card>
-        </div>
-      </div>
-      <br />
-      <div className="row gy-3">
-        <div className="col-lg">
-          <Card title="Unpaid" value={currentTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio} badge={leftToMinimumRedraw === 0 ? 'Ready' : ''}>
-            <Link to={config.urls.unpaid} className="card-link">{currentCards.length} drawing(s)</Link>
-          </Card>
-        </div>
-        <div className="col-lg">
-          <Card title="Invoiced" value={invoicedTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
-            <Link to={config.urls.invoiced} className="card-link">{invoicedCards.length} drawing(s)</Link>
-          </Card>
-        </div>
-        <div className="col-lg">
-          <Card title="Paid" value={paidTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
-            <Link to={config.urls.paid} className="card-link">{paidCards.length} drawing(s)</Link>
-          </Card>
-        </div>
-        <div className="col-lg">
-          <Card title="Total" value={sentToClientTotal} isLoading={!isLoaded} altCurrencyRatio={altCurrencyRatio}>
-            {sentToClientCards.length} drawing(s)
           </Card>
         </div>
       </div>
