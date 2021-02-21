@@ -8,7 +8,9 @@
   },
   "localStorageKeys": {
     "trelloApiKey": "trelloApiKey",
-    "trelloApiToken": "trelloApiToken"
+    "trelloApiToken": "trelloApiToken",
+    "payPalClientId": "payPalClientId",
+    "payPalSecret": "payPalSecret"
   },
   "labelsId": {
     "paid": "5f4cdb937afb6a829d4ad8f4",

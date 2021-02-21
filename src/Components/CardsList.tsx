@@ -1,4 +1,5 @@
 import { TrelloCard } from "../types";
+import { getShortCardDescription } from "../utils";
 
 export interface CardsListProps {
   cards: TrelloCard[];
@@ -9,17 +10,6 @@ const getTotal = (cards: TrelloCard[]): number => {
   return cards.reduce((summ, c) => summ += +c.customFieldItems[0].value.number, 0);
 }
 
-const getFirstGroup = (string: string, regex: RegExp): string => {
-  const match = regex.exec(string);
-  return match && match[1] ? match[1].trim() : '';
-}
-
-const getShortDescription = (card: TrelloCard): string => {
-  const orderNumber = getFirstGroup(card.desc, /Order Number:(.+)$/gm);
-  const orderType = getFirstGroup(card.desc, /Order Type:(.+)$/gm);
-
-  return `Order Number: ${orderNumber} (${orderType || card.name})`;
-}
 
 const CardsList: React.FC<CardsListProps> = (props) => {
   const currentTotal = getTotal(props.cards);
@@ -38,7 +28,7 @@ const CardsList: React.FC<CardsListProps> = (props) => {
         {props.cards.map((c, i) =>
           <tr key={c.id}>
             <th scope="row">{i + 1}</th>
-            <td><a className="link-dark" href={c.shortUrl}>{getShortDescription(c)}</a></td>
+            <td><a className="link-dark" href={c.shortUrl}>{getShortCardDescription(c)}</a></td>
             <td align="right">{c.customFieldItems[0].value.number}</td>
             <td align="right">{props.altCurrencyRatio ? `${(c.customFieldItems[0].value.number * props.altCurrencyRatio).toFixed(0)}` : 'N/A'}</td>
           </tr>
