@@ -75,12 +75,12 @@ const UnpaidDrawings = () => {
       <div className="row gy-3 ">
         <div className="col">
           <button type="button" className="btn btn-outline-primary" disabled={!!invoidedCards.length} onClick={handleCreateInvoiceClick}>
-            {invoidedCards.length ? 'Finish Previous Invoice' : 'Create Draft Invoice'}
+            {invoiceButtonText}
           </button>
         </div>
         <div className="col text-end">
           <button type="button" className="btn btn-outline-primary" disabled={isInvoiceButtonDisabled} onClick={handleMakeCardsInvoicedClick}>
-            {invoiceButtonText}
+            {invoidedCards.length ? 'Finish Previous Invoice' : 'Make Invoiced'}
           </button>
         </div>
       </div>

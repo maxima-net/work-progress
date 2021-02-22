@@ -79,5 +79,12 @@ export const getShortCardDescription = (card: TrelloCard): string => {
   const orderNumber = getFirstGroup(card.desc, /Order Number:(.+)$/gm);
   const orderType = getFirstGroup(card.desc, /Order Type:(.+)$/gm);
 
-  return `Order Number: ${orderNumber} (${orderType || card.name})`;
+  let result = '';
+  if (orderNumber) {
+    result += `Order Number: ${orderNumber} (${orderType || card.name})`
+  } else {
+    result += `Order Number: ${card.name} (${card.desc.split('\n')[0]})`;
+  }
+
+  return result;
 }

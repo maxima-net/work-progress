@@ -10,7 +10,6 @@ const getTotal = (cards: TrelloCard[]): number => {
   return cards.reduce((summ, c) => summ += +c.customFieldItems[0].value.number, 0);
 }
 
-
 const CardsList: React.FC<CardsListProps> = (props) => {
   const currentTotal = getTotal(props.cards);
 
@@ -28,7 +27,7 @@ const CardsList: React.FC<CardsListProps> = (props) => {
         {props.cards.map((c, i) =>
           <tr key={c.id}>
             <th scope="row">{i + 1}</th>
-            <td><a className="link-dark" href={c.shortUrl}>{getShortCardDescription(c)}</a></td>
+            <td><a className="link-dark" target="_blank" href={c.shortUrl}>{getShortCardDescription(c)}</a></td>
             <td align="right">{c.customFieldItems[0].value.number}</td>
             <td align="right">{props.altCurrencyRatio ? `${(c.customFieldItems[0].value.number * props.altCurrencyRatio).toFixed(0)}` : 'N/A'}</td>
           </tr>
